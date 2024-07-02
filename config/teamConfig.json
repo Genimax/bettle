@@ -1,0 +1,12 @@
+{
+  "red": {
+    "color": "#DE883F",
+    "name": "dogs",
+    "image": "/Images/dogs.png"
+  },
+  "blue": {
+    "color": "#1B7BD4",
+    "name": "cats",
+    "image": "/Images/cats.png"
+  }
+}
