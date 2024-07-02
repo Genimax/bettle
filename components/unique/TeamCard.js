@@ -1,7 +1,9 @@
 import Image from "next/image";
 
 import teamSettings from "@/config/teamConfig.json";
-import ContributionPanel from "@/components/shared/ContributionPanel";
+
+import CatsPic from "@/public/Images/cats.png";
+import DogsPic from "@/public/Images/dogs.png";
 
 /**
  * TeamCard component
@@ -20,7 +22,7 @@ const TeamCard = ({ team = "red" || "blue" }) => {
   return (
     <div className="uppercase font-bold text-2xl relative  flex-col flex items-center">
       <Image
-        src={teamSettings[team].image}
+        src={team === "red" ? DogsPic : CatsPic}
         alt={"Team Icon"}
         width={500}
         height={500}
