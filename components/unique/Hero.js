@@ -1,5 +1,5 @@
-import BorderedBlock from "@/components/shared/BorderedBlock";
-import Timer from "@/components/unique/Timer";
+import BorderedBlock from "../shared/BorderedBlock";
+import Timer from "../unique/Timer";
 
 const Hero = () => {
   return (

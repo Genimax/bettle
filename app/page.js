@@ -1,6 +1,6 @@
 "use client";
-import Header from "@/components/shared/Header";
-import HomePage from "@/components/pages/HomePage";
+import Header from "../components/shared/Header";
+import HomePage from "../components/pages/HomePage";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
 const manifestUrl = process.env.NEXT_PUBLIC_MANIFEST_URL;

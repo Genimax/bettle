@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import logo from "@/public/Logo.svg";
+import logo from "../../public/Logo.svg";
 import Link from "next/link";
 import { TonConnectButton } from "@tonconnect/ui-react";
 

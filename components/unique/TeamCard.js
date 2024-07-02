@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import teamSettings from "@/config/teamConfig.json";
+import teamSettings from "../../config/teamConfig.json";
 
-import CatsPic from "@/public/Images/cats.png";
-import DogsPic from "@/public/Images/dogs.png";
+import CatsPic from "../../public/Images/cats.png";
+import DogsPic from "../../public/Images/dogs.png";
 
 /**
  * TeamCard component

@@ -1,4 +1,4 @@
-import ValueInput from "@/components/shared/ValueInput";
+import ValueInput from "../shared/ValueInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

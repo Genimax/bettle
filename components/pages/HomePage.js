@@ -1,11 +1,11 @@
-import TeamCard from "@/components/unique/TeamCard";
-import HowItWorks from "@/components/unique/howItWorks";
-import Footer from "@/components/shared/Footer";
-import ContributionPanel from "@/components/shared/ContributionPanel";
-import Slider from "@/components/unique/Slider";
-import Hero from "@/components/unique/Hero";
+import TeamCard from "../unique/TeamCard";
+import HowItWorks from "../unique/howItWorks";
+import Footer from "../shared/Footer";
+import ContributionPanel from "../shared/ContributionPanel";
+import Slider from "../unique/Slider";
+import Hero from "../unique/Hero";
 import { useTonAddress } from "@tonconnect/ui-react";
-import Dashboard from "@/components/shared/Dashboard";
+import Dashboard from "../shared/Dashboard";
 
 const HomePage = () => {
   const address = useTonAddress();

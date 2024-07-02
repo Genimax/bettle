@@ -1,5 +1,5 @@
-import BorderedBlock from "@/components/shared/BorderedBlock";
-import Sequence from "@/components/unique/Sequence";
+import BorderedBlock from "../shared/BorderedBlock";
+import Sequence from "../unique/Sequence";
 
 const howItWorksText = [
   {
