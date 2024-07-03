@@ -1,6 +1,8 @@
 import { CldImage } from "next-cloudinary";
 
-import teamSettings from "../../config/teamConfig.json";
+import { extractCurrentConfig } from "@/utils/configTools";
+
+const teamSettings = extractCurrentConfig();
 
 /**
  * TeamCard component

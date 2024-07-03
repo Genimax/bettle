@@ -31,7 +31,7 @@ const ContributionPanel = ({ team }) => {
   const setModal = useStore((state) => state.setModal);
 
   const showModal = () => {
-    setModal(<ModalWindowShare type={"bet"} team={team} />);
+    setModal(<ModalWindowShare type={"bet"} team={{ color: team }} />);
   };
 
   useEffect(() => {

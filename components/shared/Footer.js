@@ -1,5 +1,11 @@
 import Image from "next/image";
 
+/**
+ * Footer component that renders the footer section of the webpage.
+ * It includes links with icons and an email address.
+ *
+ * @returns {JSX.Element} The rendered footer component.
+ */
 const Footer = () => {
   return (
     <div className="w-full bg-gradient-orange-to-blue flex justify-center">

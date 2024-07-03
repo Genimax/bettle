@@ -1,12 +1,30 @@
-{
+{ "currentCompetitionId": 0,
+  "data": [{
+  "competitionId": 0,
   "red": {
     "color": "#DE883F",
     "name": "dogs",
-    "cloudinaryImageId": "jl8bjtpsfyxm45knryaq"
+    "cloudinaryImageId": "jl8bjtpsfyxm45knryaq",
+    "winImage": {
+      "id": "zhveh37plwanvu00kirf",
+      "url": "https://res.cloudinary.com/dcf9mjspo/image/upload/v1719997269/zhveh37plwanvu00kirf.png"
+    },
+    "betImage": {
+      "id": "ekktrwiynbwuefz2fyiz",
+      "url": "https://res.cloudinary.com/dcf9mjspo/image/upload/v1719997268/ekktrwiynbwuefz2fyiz.png"
+    }
   },
   "blue": {
     "color": "#1B7BD4",
     "name": "cats",
-    "cloudinaryImageId": "ia16redwck4vpkstyoaf"
+    "cloudinaryImageId": "ia16redwck4vpkstyoaf",
+    "winImage": {
+      "id": "p1z5ivjgwqstegtwbt1u",
+      "url": "https://res.cloudinary.com/dcf9mjspo/image/upload/v1719997268/p1z5ivjgwqstegtwbt1u.png"
+    },
+    "betImage": {
+      "id": "oobzmkfqslc9ejjasarg",
+      "url": "https://res.cloudinary.com/dcf9mjspo/image/upload/v1719997268/oobzmkfqslc9ejjasarg.png"
+    }
   }
-}
+}]}
