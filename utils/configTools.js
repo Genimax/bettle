@@ -5,6 +5,5 @@ export const findConfigById = (id) => {
 };
 export const extractCurrentConfig = () => {
   const currentId = teamConfigFile.currentCompetitionId;
-  console.log(findConfigById(currentId));
   return findConfigById(currentId);
 };

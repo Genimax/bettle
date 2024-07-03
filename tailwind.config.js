@@ -21,6 +21,25 @@ module.exports = {
         "main-orange": "#DE883F",
         "main-blue": "#1B7BD4",
       },
+      keyframes: {
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
+        wiggleFlipped: {
+          "0%, 100%": { transform: "rotate(-3deg) scaleX(-1)" },
+          "50%": { transform: "rotate(3deg) scaleX(-1)" },
+        },
+        wiggleTranslated: {
+          "0%, 100%": { transform: "rotate(-3deg) translateY(-10%)" },
+          "50%": { transform: "rotate(3deg) translateY(-10%)" },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 1s ease-in-out infinite",
+        wiggleFlipped: "wiggleFlipped 1s ease-in-out infinite",
+        wiggleTranslated: "wiggleTranslated 1s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

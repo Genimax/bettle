@@ -1,4 +1,5 @@
 { "currentCompetitionId": 0,
+  "minimumUSD": 5,
   "data": [{
   "competitionId": 0,
   "red": {
@@ -12,7 +13,8 @@
     "betImage": {
       "id": "ekktrwiynbwuefz2fyiz",
       "url": "https://res.cloudinary.com/dcf9mjspo/image/upload/v1719997268/ekktrwiynbwuefz2fyiz.png"
-    }
+    },
+    "winText": "The Dogs have chased The Cats out of the competition!"
   },
   "blue": {
     "color": "#1B7BD4",
@@ -25,6 +27,7 @@
     "betImage": {
       "id": "oobzmkfqslc9ejjasarg",
       "url": "https://res.cloudinary.com/dcf9mjspo/image/upload/v1719997268/oobzmkfqslc9ejjasarg.png"
-    }
+    },
+    "winText": "The Cats showed their sharp claws and defeated The Dogs!"
   }
 }]}

@@ -51,6 +51,24 @@ position: relative;
   mask-composite: subtract;
 }
 
+.glow-red {
+  text-shadow: 0 0 5px #DE883F, 0 0 10px #DE883F;
+}
+
+.glow-blue {
+  text-shadow: 0 0 5px #1B7BD4, 0 0 10px #1B7BD4;
+}
+
+.border-main-orange {
+  border-color: #DE883F;
+  box-shadow: 0 0 50px 1px #DE883F;
+}
+
+.border-main-blue {
+border-color: #1B7BD4;
+box-shadow: 0 0 50px 1px #1B7BD4;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

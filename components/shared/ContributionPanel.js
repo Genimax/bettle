@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import useStore from "@/store";
 import ModalWindowShare from "@/components/shared/ModalWindowShare";
+import { extractCurrentConfig } from "@/utils/configTools";
 
 const ContributionPanel = ({ team }) => {
   let color;
@@ -27,7 +28,6 @@ const ContributionPanel = ({ team }) => {
   const [usdValue, setUsdValue] = useState("");
   const [usdToTON, setUsdToTON] = useState(null);
 
-  const modal = useStore((state) => state.modal);
   const setModal = useStore((state) => state.setModal);
 
   const showModal = () => {
@@ -70,12 +70,11 @@ const ContributionPanel = ({ team }) => {
     setLastUpdated("usd");
   };
 
-  const usdMin = 10;
+  const usdMin = extractCurrentConfig().minimumUSD;
   const TONMin = usdToTON ? (usdMin / usdToTON).toFixed(4) : 0.85616 * usdMin;
 
   return (
     <div className="flex flex-col gap-4 w-1/3 text-xl min-w-60">
-      {modal}
       <ValueInput
         currency="TON"
         minimum={TONMin}

@@ -25,7 +25,7 @@ const TeamCard = ({ team = "red" || "blue" }) => {
         alt={"Team Icon"}
         width={288}
         height={260}
-        className={`h-full md:w-72 translate-y-[-10%] px-10 hover:rotate-6 transition-transform duration-300 ease-in-out`}
+        className={`h-full md:w-72 translate-y-[-10%] px-10 hover:animate-wiggleTranslated`}
       />
       <div
         className={`py-4 px-10 rounded-xl w-fit min-w-52 md:min-w-[500px] text-center border-2 bg-black`}

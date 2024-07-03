@@ -2,8 +2,11 @@ import ShareIcon from "@/public/share.svg";
 import Image from "next/image";
 import useStore from "@/store";
 import ModalWindowShare from "@/components/shared/ModalWindowShare";
+import { findConfigById } from "@/utils/configTools";
 
-const Dashboard = () => {
+const Dashboard = ({ address }) => {
+  if (!address) return null;
+
   const setModal = useStore((state) => state.setModal);
   const feed = [
     {
@@ -13,11 +16,9 @@ const Dashboard = () => {
       type: "win",
       winnersTeam: {
         color: "red",
-        name: "dogs",
       },
       looseTeam: {
         color: "blue",
-        name: "cats",
       },
       contributedAmount: "0.007",
       amount: "0.013",
@@ -29,11 +30,9 @@ const Dashboard = () => {
       type: "win",
       winnersTeam: {
         color: "red",
-        name: "dogs",
       },
       looseTeam: {
         color: "blue",
-        name: "cats",
       },
       contributedAmount: "0.007",
       amount: "0.013",
@@ -74,7 +73,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="bg-[#0F0F0F] container w-full lg:w-4/6 px-4 sm:px-10 md:px-20 py-8 sm:py-10 md:py-12 rounded-xl">
+    <div className="bg-[#0F0F0F] container w-full lg:w-4/6 px-4 sm:px-10 md:px-12 py-8 sm:py-10 md:py-8 rounded-xl">
       <h4 className="text-2xl text-center font-thin">YOUR FEED:</h4>
       <div className="min-h-60  p-6">
         {!!feed.length && (
@@ -108,17 +107,27 @@ const Dashboard = () => {
                       }}
                     >
                       Congratulations! Team{" "}
-                      {item.winnersTeam.name.toUpperCase()} has defeated Team{" "}
-                      {item.looseTeam.name.toUpperCase()}. Your contribution
-                      amounted to {item.contributedAmount} TON, your winnings
-                      are <span className="font-bold">{item.amount} TON</span>.
+                      {findConfigById(item.competitionId)[
+                        item.winnersTeam.color
+                      ].name.toUpperCase()}{" "}
+                      has defeated Team{" "}
+                      {findConfigById(item.competitionId)[
+                        item.looseTeam.color
+                      ].name.toUpperCase()}
+                      . Your contribution amounted to {item.contributedAmount}{" "}
+                      TON, your winnings are{" "}
+                      <span className="font-bold">{item.amount} TON</span>.
                     </p>
                   </>
                 )}
                 {item.type === "bet" && (
                   <p className="text-lg bg-[#212121] py-2 px-10 rounded-xl text-[#787878]">
                     {item.date}: You have placed a bet of {item.amount} TON on
-                    Team {item.team.name.toUpperCase()}.
+                    Team{" "}
+                    {findConfigById(item.competitionId)[
+                      item.team.color
+                    ].name.toUpperCase()}
+                    .
                   </p>
                 )}
               </div>
