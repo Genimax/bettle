@@ -71,11 +71,12 @@ const Dashboard = ({ address }) => {
       amount: "0.004",
     },
   ];
+  // const feed = [];
 
   return (
     <div className="bg-[#0F0F0F] container w-full lg:w-4/6 px-4 sm:px-10 md:px-12 py-8 sm:py-10 md:py-8 rounded-xl">
       <h4 className="text-2xl text-center font-thin">YOUR FEED:</h4>
-      <div className="min-h-60  p-6">
+      <div className="min-h-60 h-60  p-6">
         {!!feed.length && (
           <div className="w-full max-h-60 overflow-y-auto pr-4 flex flex-col gap-4">
             {feed.map((item) => (
@@ -136,11 +137,11 @@ const Dashboard = ({ address }) => {
         )}
         {!feed.length && (
           <div className="w-full h-full flex items-center justify-center">
-            <p className="text-2xl opacity-15">NO DATA</p>
+            <p className="text-2xl opacity-15">NO TRANSACTIONS</p>
           </div>
         )}
       </div>
-      <div className="w-full flex justify-end">
+      <div className="pt-10 w-full flex justify-end">
         <p
           className="text-2xl text-right w-fit"
           style={{

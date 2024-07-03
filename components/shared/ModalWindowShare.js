@@ -79,7 +79,7 @@ const ModalWindowShare = ({
           alt={"Social media share picture of a result"}
         />
       </div>
-      <SocialMediaPanel text={generateShareText()} />
+      <SocialMediaPanel text={generateShareText()} color={color} />
       <div className="flex justify-center w-full">
         <button
           onClick={handleDownload}

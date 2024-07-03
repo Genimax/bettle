@@ -23,7 +23,7 @@ const Footer = () => {
         <p>betduel@gmail.com</p>
         <a href="#" className="flex items-center justify-center gap-2 ">
           <Image
-            className=""
+            className="p-1.5 bg-white rounded-full"
             src={"/Images/x.svg"}
             alt={"X icon"}
             width={32}

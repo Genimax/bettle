@@ -28,7 +28,7 @@ const HomePage = () => {
   return (
     <>
       {modal}
-      <Hero />
+      <Hero isCompetitionActive={data.isCompetitionActive} />
       <h3 className="font-thin uppercase text-[#D2D7FF] text-2xl lg:text-5xl w-4/6 text-center">
         Place your bet on a team using cryptocurrency and join the month-long
         competition

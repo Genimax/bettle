@@ -1,8 +1,7 @@
 import BorderedBlock from "../shared/BorderedBlock";
 import Timer from "../unique/Timer";
 
-const Hero = () => {
-  const waiting = true;
+const Hero = ({ isCompetitionActive }) => {
   const timestamp = "01.08.2024";
 
   return (
@@ -16,7 +15,7 @@ const Hero = () => {
         </div>
         <div className="flex flex-col gap-4 sm:gap-6 md:gap-8 lg:gap-10">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-black">
-            {waiting ? "NEXT COMPETITION" : "TIME LEFT"}:
+            {!isCompetitionActive ? "NEXT COMPETITION" : "TIME LEFT"}:
           </h2>
           <Timer timestamp={timestamp} />
         </div>

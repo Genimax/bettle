@@ -52,7 +52,8 @@ const ContributionPanel = ({ team }) => {
   // Эффект для отслеживания изменений usdValue
   useEffect(() => {
     if (usdValue && usdToTON && lastUpdated === "usd") {
-      const newTONValue = (usdToTON / usdValue).toFixed(5);
+      console.log(usdToTON);
+      const newTONValue = (usdValue / usdToTON).toFixed(5);
       setTONValue(newTONValue);
       setLastUpdated(null); // сбросить последнее обновление
     }
