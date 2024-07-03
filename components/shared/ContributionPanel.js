@@ -91,7 +91,7 @@ const ContributionPanel = ({ team }) => {
       <button
         onClick={showModal}
         disabled={!TONValue || !usdValue || usdValue < usdMin}
-        className={`disabled:bg-gray-500 font-bold ${color} px-4 py-3 rounded-xl hover:bg-opacity-80 transition-all duration-300 ease-in-out`}
+        className={`transition-transform duration-100 ease-in-out active:scale-95 disabled:bg-gray-500 font-bold ${color} px-4 py-3 rounded-xl hover:bg-opacity-80 transition-all duration-300 ease-in-out`}
       >
         CONTRIBUTE
       </button>

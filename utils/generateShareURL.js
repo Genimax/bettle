@@ -1,7 +1,7 @@
 import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
 
-const generateShareUrls = (imageFilename, text) => {
-  const imageUrl = `${process.env.NEXT_PUBLIC_URL}/images/${imageFilename}`;
+const generateShareUrls = (text) => {
+  const imageUrl = process.env.NEXT_PUBLIC_URL;
   const encodedImageUrl = encodeURIComponent(imageUrl);
   const encodedText = encodeURIComponent(text);
 

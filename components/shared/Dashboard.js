@@ -6,8 +6,14 @@ const Dashboard = () => {
       id: 1,
       date: "07/27/2024",
       type: "win",
-      winnersTeam: "red",
-      looseTeam: "blue",
+      winnersTeam: {
+        color: "red",
+        name: "dogs",
+      },
+      looseTeam: {
+        color: "blue",
+        name: "cats",
+      },
       contributedAmount: "0.007",
       amount: "0.013",
     },
@@ -15,24 +21,45 @@ const Dashboard = () => {
       id: 2,
       date: "07/27/2024",
       type: "win",
-      winnersTeam: "red",
-      looseTeam: "blue",
+      winnersTeam: {
+        color: "red",
+        name: "dogs",
+      },
+      looseTeam: {
+        color: "blue",
+        name: "cats",
+      },
       contributedAmount: "0.007",
       amount: "0.013",
     },
-    { id: 3, date: "06/27/2024", type: "bet", team: "red", amount: "0.003" },
+    {
+      id: 3,
+      date: "06/27/2024",
+      type: "bet",
+      team: {
+        color: "red",
+        name: "dogs",
+      },
+      amount: "0.003",
+    },
     {
       id: 4,
       date: "06/28/2024",
       type: "bet",
-      team: "red",
+      team: {
+        color: "red",
+        name: "dogs",
+      },
       amount: "0.004",
     },
     {
       id: 5,
       date: "06/28/2024",
       type: "bet",
-      team: "red",
+      team: {
+        color: "red",
+        name: "dogs",
+      },
       amount: "0.004",
     },
   ];
@@ -43,19 +70,20 @@ const Dashboard = () => {
       <div className="min-h-60  p-6">
         {!!feed.length && (
           <div className="w-full max-h-60 overflow-y-auto pr-4 flex flex-col gap-4">
-            {feed.map((item, index) => (
+            {feed.map((item) => (
               <div className="text-center" key={item.id}>
                 {item.type === "win" && (
                   <p
                     className="text-lg bg-[#212121] py-2 px-10 rounded-xl"
                     style={{
-                      color: item.winnersTeam === "red" ? "#DE883F" : "#1B7BD4",
+                      color:
+                        item.winnersTeam.color === "red"
+                          ? "#DE883F"
+                          : "#1B7BD4",
                     }}
                   >
-                    Congratulations! Team{" "}
-                    {teamConfig[item.winnersTeam].name.toUpperCase()} has
-                    defeated Team{" "}
-                    {teamConfig[item.looseTeam].name.toUpperCase()}. Your
+                    Congratulations! Team {item.winnersTeam.name.toUpperCase()}{" "}
+                    has defeated Team {item.looseTeam.name.toUpperCase()}. Your
                     contribution amounted to {item.contributedAmount} TON, your
                     winnings are{" "}
                     <span className="font-bold">{item.amount} TON</span>.
@@ -64,7 +92,7 @@ const Dashboard = () => {
                 {item.type === "bet" && (
                   <p className="text-lg bg-[#212121] py-2 px-10 rounded-xl text-[#787878]">
                     {item.date}: You have placed a bet of {item.amount} TON on
-                    Team {teamConfig[item.team].name.toUpperCase()}.
+                    Team {item.team.name.toUpperCase()}.
                   </p>
                 )}
               </div>

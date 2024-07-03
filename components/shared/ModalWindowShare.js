@@ -30,7 +30,9 @@ const ModalWindowShare = ({
 
   const generateShareText = () => {
     if (type === "bet") {
-      return `I just invested in ${teamConfig[team].name.toUpperCase()} team!`;
+      return `I just invested in ${teamConfig[
+        team
+      ].name.toUpperCase()} team, help us win!`;
     } else {
       return `I just won the Bettle on with ${teamConfig[
         team

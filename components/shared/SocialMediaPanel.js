@@ -1,7 +1,7 @@
 import generateShareUrls from "@/utils/generateShareURL";
 
-const SocialMediaPanel = ({ imageName, text }) => {
-  const urls = generateShareUrls(imageName, text);
+const SocialMediaPanel = ({ text }) => {
+  const urls = generateShareUrls(text);
   const handleClick = (media) => {
     open(urls[media], "_blank");
   };
