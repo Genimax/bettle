@@ -2,7 +2,7 @@ import ValueInput from "../shared/ValueInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useStore from "@/store";
-import ModalWindow from "@/components/shared/ModalWindow";
+import ModalWindowShare from "@/components/shared/ModalWindowShare";
 
 const ContributionPanel = ({ team }) => {
   let color;
@@ -30,9 +30,8 @@ const ContributionPanel = ({ team }) => {
   const modal = useStore((state) => state.modal);
   const setModal = useStore((state) => state.setModal);
 
-  const showModal = (type, team) => {
-    setModal(<ModalWindow type={type} team={team} />);
-    console.log(modal);
+  const showModal = () => {
+    setModal(<ModalWindowShare type={"bet"} team={team} />);
   };
 
   useEffect(() => {
