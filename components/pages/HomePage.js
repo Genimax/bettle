@@ -1,5 +1,5 @@
 import TeamCard from "../unique/TeamCard";
-import HowItWorks from "../unique/howItWorks";
+import HowItWorks from "../unique/HowItWorks";
 import Footer from "../shared/Footer";
 import ContributionPanel from "../shared/ContributionPanel";
 import Slider from "../unique/Slider";
@@ -17,7 +17,7 @@ const HomePage = () => {
         Place your bet on a team using cryptocurrency and join the month-long
         competition
       </h3>
-      <div className="flex flex-wrap container gap-16 flex-row w-full justify-evenly my-[-5%] mb-10">
+      <div className="flex flex-wrap container gap-16 flex-row w-full justify-evenly my-[-10px] mb-10">
         <div className="flex flex-wrap container gap-12 flex-row w-full justify-evenly">
           <TeamCard team="red" />
           <TeamCard team="blue" />

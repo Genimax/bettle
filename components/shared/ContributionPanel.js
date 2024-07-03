@@ -1,6 +1,8 @@
 import ValueInput from "../shared/ValueInput";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useStore from "@/store";
+import ModalWindow from "@/components/shared/ModalWindow";
 
 const ContributionPanel = ({ team }) => {
   let color;
@@ -24,6 +26,14 @@ const ContributionPanel = ({ team }) => {
   const [TONValue, setTONValue] = useState("");
   const [usdValue, setUsdValue] = useState("");
   const [usdToTON, setUsdToTON] = useState(null);
+
+  const modal = useStore((state) => state.modal);
+  const setModal = useStore((state) => state.setModal);
+
+  const showModal = (type, team) => {
+    setModal(<ModalWindow type={type} team={team} />);
+    console.log(modal);
+  };
 
   useEffect(() => {
     if (!usdToTON) getUSDToTON().then((usd) => setUsdToTON(usd));
@@ -66,6 +76,7 @@ const ContributionPanel = ({ team }) => {
 
   return (
     <div className="flex flex-col gap-4 w-1/3 text-xl min-w-60">
+      {modal}
       <ValueInput
         currency="TON"
         minimum={TONMin}
@@ -79,6 +90,7 @@ const ContributionPanel = ({ team }) => {
         setValue={updateUsdValue}
       />
       <button
+        onClick={showModal}
         disabled={!TONValue || !usdValue || usdValue < usdMin}
         className={`disabled:bg-gray-500 font-bold ${color} px-4 py-3 rounded-xl hover:bg-opacity-80 transition-all duration-300 ease-in-out`}
       >
