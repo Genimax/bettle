@@ -5,7 +5,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Bettle",
-  description: "Choose your team where you can win",
+  description:
+    "Place your bet on a team using cryptocurrency and join the month-long competition.",
 };
 
 export default function RootLayout({ children }) {
