@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tonconnect/ui-react": "^2.0.5",
+    "@vercel/speed-insights": "^1.0.12",
     "axios": "^1.7.2",
     "next": "14.2.4",
     "next-cloudinary": "^6.6.2",
