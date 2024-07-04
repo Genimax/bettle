@@ -9,15 +9,15 @@ const TeamInterface = ({ isCompetitionActive }) => {
   return (
     <div className="flex flex-wrap container gap-16 flex-row w-full justify-evenly my-[-10px] mb-10">
       <div className="flex flex-wrap container gap-12 flex-row w-full justify-evenly">
-        <TeamCard team="red" />
-        <TeamCard team="blue" />
-      </div>
-      {address && (
-        <div className="flex flex-wrap container gap-12 w-full justify-evenly">
-          <ContributionPanel team={"red"} />
-          <ContributionPanel team={"blue"} />
+        <div>
+          <TeamCard team="red" />
+          {address && <ContributionPanel team={"red"} />}
         </div>
-      )}
+        <div>
+          <TeamCard team="blue" />
+          {address && <ContributionPanel team={"blue"} />}
+        </div>
+      </div>
     </div>
   );
 };

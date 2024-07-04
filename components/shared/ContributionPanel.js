@@ -18,7 +18,6 @@ const ContributionPanel = ({ team }) => {
       "https://min-api.cryptocompare.com/data/price?fsym=TONCOIN&tsyms=USD"
     );
     const data = response.data;
-    console.log(data);
     return data["USD"];
 
     return 7.867;
@@ -52,7 +51,6 @@ const ContributionPanel = ({ team }) => {
   // Эффект для отслеживания изменений usdValue
   useEffect(() => {
     if (usdValue && usdToTON && lastUpdated === "usd") {
-      console.log(usdToTON);
       const newTONValue = (usdValue / usdToTON).toFixed(5);
       setTONValue(newTONValue);
       setLastUpdated(null); // сбросить последнее обновление
@@ -75,7 +73,7 @@ const ContributionPanel = ({ team }) => {
   const TONMin = (usdMin / usdToTON).toFixed(4);
 
   return (
-    <div className="flex flex-col gap-4 w-1/3 text-xl min-w-60">
+    <div className="flex flex-col gap-4 w-full text-xl min-w-60 pt-8">
       <ValueInput
         currency="TON"
         minimum={TONMin}

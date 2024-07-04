@@ -19,13 +19,13 @@ const teamSettings = extractCurrentConfig();
  */
 const TeamCard = ({ team = "red" || "blue" }) => {
   return (
-    <div className="uppercase font-bold text-2xl relative  flex-col flex items-center hover:scale-105 transition-transform duration-300 ease-in-out active:scale-90">
+    <div className="uppercase font-bold text-2xl flex-col flex items-center hover:scale-105 transition-transform duration-300 ease-in-out">
       <CldImage
         src={teamSettings[team].cloudinaryImageId}
         alt={"Team Icon"}
         width={288}
         height={260}
-        className={`h-full md:w-72 translate-y-[-10%] px-10 hover:animate-wiggleTranslated`}
+        className={`h-64 translate-y-[-10%] px-10 hover:animate-wiggleTranslated`}
       />
       <div
         className={`py-4 px-10 rounded-xl w-fit min-w-52 md:min-w-[500px] text-center border-2 bg-black`}

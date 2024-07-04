@@ -6,6 +6,8 @@ import SocialMediaPanel from "@/components/shared/SocialMediaPanel";
 
 import { CldImage } from "next-cloudinary";
 import { extractCurrentConfig, findConfigById } from "@/utils/configTools";
+import { useState } from "react";
+import LoadingSpinner from "@/components/shared/LoadingSpinnder";
 
 const teamConfig = extractCurrentConfig();
 
@@ -24,6 +26,7 @@ const ModalWindowShare = ({
 
   const setModal = useStore((state) => state.setModal);
   const selectedTeamConfig = findConfigById(competitionId);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     setModal(null);
@@ -66,17 +69,26 @@ const ModalWindowShare = ({
       <p className="text-center font-bold text-lg md:text-2xl">
         SHARE YOUR {type.toUpperCase()} ON SOCIAL MEDIA
       </p>
-      <div className="flex justify-center">
+      <div className="flex flex-col justify-center items-center">
         <CldImage
           src={
             type === "bet"
               ? teamConfig[team.color].betImage.url
               : selectedTeamConfig[team.color].winImage.url
           }
-          height={1000}
-          width={1000}
-          className="rounded-2xl"
+          height={600}
+          onLoad={() => {
+            setLoading(false);
+          }}
+          width={600}
+          className={`rounded-2xl ${loading && "opacity-0 scale-0 absolute"}`}
           alt={"Social media share picture of a result"}
+        />
+        <LoadingSpinner
+          loading={loading}
+          className="py-10"
+          widthHeight={"w-16 h-16"}
+          color={team.color === "red" ? "main-orange" : "blue-500"}
         />
       </div>
       <SocialMediaPanel text={generateShareText()} color={color} />
