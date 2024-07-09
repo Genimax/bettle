@@ -1,0 +1,250 @@
+;;
+;; Header files for BettleContract
+;; NOTE: declarations are sorted for optimal order
+;;
+
+;; __tact_verify_address
+slice __tact_verify_address(slice address) inline;
+
+;; __tact_load_address
+(slice, slice) __tact_load_address(slice cs) inline;
+
+;; __tact_store_address
+builder __tact_store_address(builder b, slice address) inline;
+
+;; __tact_my_balance
+int __tact_my_balance() inline;
+
+;; __tact_not_null
+forall X -> X __tact_not_null(X x) inline;
+
+;; __tact_context_get
+(int, slice, int, slice) __tact_context_get() inline;
+
+;; __tact_context_get_sender
+slice __tact_context_get_sender() inline;
+
+;; __tact_store_bool
+builder __tact_store_bool(builder b, int v) inline;
+
+;; __tact_dict_set_uint_cell
+(cell, ()) __tact_dict_set_uint_cell(cell d, int kl, int k, cell v) inline;
+
+;; __tact_dict_min_uint_cell
+(int, cell, int) __tact_dict_min_uint_cell(cell d, int kl) inline;
+
+;; __tact_dict_next_uint_cell
+(int, cell, int) __tact_dict_next_uint_cell(cell d, int kl, int pivot) inline;
+
+;; __tact_dict_set_slice_int
+(cell, ()) __tact_dict_set_slice_int(cell d, int kl, slice k, int v, int vl) inline;
+
+;; __tact_dict_get_slice_int
+int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline;
+
+;; __tact_dict_set_slice_cell
+(cell, ()) __tact_dict_set_slice_cell(cell d, int kl, slice k, cell v) inline;
+
+;; __tact_dict_get_slice_cell
+cell __tact_dict_get_slice_cell(cell d, int kl, slice k) inline;
+
+;; __tact_dict_min_slice_cell
+(slice, cell, int) __tact_dict_min_slice_cell(cell d, int kl) inline;
+
+;; __tact_dict_next_slice_cell
+(slice, cell, int) __tact_dict_next_slice_cell(cell d, int kl, slice pivot) inline;
+
+;; __tact_slice_eq
+int __tact_slice_eq(slice a, slice b) inline;
+
+;; $Deploy$_load
+(slice, ((int))) $Deploy$_load(slice sc_0) inline;
+
+;; $DeployOk$_store
+builder $DeployOk$_store(builder build_0, (int) v) inline;
+
+;; $DeployOk$_store_cell
+cell $DeployOk$_store_cell((int) v) inline;
+
+;; $Notification$_store
+builder $Notification$_store(builder build_0, (slice, int, int, int) v) inline;
+
+;; $Notification$_store_cell
+cell $Notification$_store_cell((slice, int, int, int) v) inline;
+
+;; $FeedOfAddress$_store
+builder $FeedOfAddress$_store(builder build_0, (cell, int) v) inline;
+
+;; $FeedOfAddress$_store_cell
+cell $FeedOfAddress$_store_cell((cell, int) v) inline;
+
+;; $FeedOfAddress$_load
+(slice, ((cell, int))) $FeedOfAddress$_load(slice sc_0) inline;
+
+;; $FeedOfAddress$_as_optional
+tuple $FeedOfAddress$_as_optional((cell, int) v) inline;
+
+;; $FeedOfAddress$_load_opt
+tuple $FeedOfAddress$_load_opt(cell cl) inline;
+
+;; $ActiveBet$_store
+builder $ActiveBet$_store(builder build_0, (int, slice) v) inline;
+
+;; $ActiveBet$_store_cell
+cell $ActiveBet$_store_cell((int, slice) v) inline;
+
+;; $ActiveBet$_load
+(slice, ((int, slice))) $ActiveBet$_load(slice sc_0) inline;
+
+;; $ActiveBet$_as_optional
+tuple $ActiveBet$_as_optional((int, slice) v) inline;
+
+;; $ActiveBet$_load_opt
+tuple $ActiveBet$_load_opt(cell cl) inline;
+
+;; $ActiveBetsArray$_store
+builder $ActiveBetsArray$_store(builder build_0, (cell, int) v) inline;
+
+;; $ActiveBetsArray$_store_cell
+cell $ActiveBetsArray$_store_cell((cell, int) v) inline;
+
+;; $ActiveBetsArray$_load
+(slice, ((cell, int))) $ActiveBetsArray$_load(slice sc_0) inline;
+
+;; $ActiveBetsArray$_as_optional
+tuple $ActiveBetsArray$_as_optional((cell, int) v) inline;
+
+;; $ActiveBetsArray$_load_opt
+tuple $ActiveBetsArray$_load_opt(cell cl) inline;
+
+;; $Bet$_load
+(slice, ((slice))) $Bet$_load(slice sc_0) inline;
+
+;; $BettleContract$_store
+builder $BettleContract$_store(builder build_0, (int, slice, int, int, int, int, cell, cell, cell, int) v) inline;
+
+;; $BettleContract$_load
+(slice, ((int, slice, int, int, int, int, cell, cell, cell, int))) $BettleContract$_load(slice sc_0) inline;
+
+;; $StateInit$_not_null
+((cell, cell)) $StateInit$_not_null(tuple v) inline;
+
+;; $Context$_get_value
+_ $Context$_get_value((int, slice, int, slice) v) inline;
+
+;; $Team$_not_null
+((slice, int)) $Team$_not_null(tuple v) inline;
+
+;; $Team$_as_optional
+tuple $Team$_as_optional((slice, int) v) inline;
+
+;; $Team$_to_tuple
+tuple $Team$_to_tuple(((slice, int)) v) inline;
+
+;; $Team$_to_opt_tuple
+tuple $Team$_to_opt_tuple(tuple v) inline;
+
+;; $Competition$_to_external
+(int, tuple, tuple, int, int) $Competition$_to_external(((int, tuple, tuple, int, int)) v) inline;
+
+;; $FeedOfAddress$_not_null
+((cell, int)) $FeedOfAddress$_not_null(tuple v) inline;
+
+;; $FeedOfAddress$_to_external
+(cell, int) $FeedOfAddress$_to_external(((cell, int)) v) inline;
+
+;; $ActiveBet$_not_null
+((int, slice)) $ActiveBet$_not_null(tuple v) inline;
+
+;; $ActiveBetsArray$_not_null
+((cell, int)) $ActiveBetsArray$_not_null(tuple v) inline;
+
+;; $BettleContract$init$_load
+(slice, ((int))) $BettleContract$init$_load(slice sc_0) inline;
+
+;; $global_addDaysToTimestamp
+int $global_addDaysToTimestamp(int $timestamp, int $days, int $minutes) impure inline_ref;
+
+;; $BettleContract$_contract_init
+(int, slice, int, int, int, int, cell, cell, cell, int) $BettleContract$_contract_init(int $id) impure inline_ref;
+
+;; $BettleContract$_contract_load
+(int, slice, int, int, int, int, cell, cell, cell, int) $BettleContract$_contract_load() impure inline_ref;
+
+;; $BettleContract$_contract_store
+() $BettleContract$_contract_store((int, slice, int, int, int, int, cell, cell, cell, int) v) impure inline;
+
+;; $global_send
+() $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
+
+;; $global_getWinners
+slice $global_getWinners(int $totalRed, int $totalBlue) impure inline_ref;
+
+;; $global_getWinValue
+int $global_getWinValue((cell, int) $betsByAddress, slice $winTeam, int $totalBetsByTeam, int $winAmount) impure inline_ref;
+
+;; $ActiveBetsArray$_constructor_items_length
+((cell, int)) $ActiveBetsArray$_constructor_items_length(cell items, int length) inline;
+
+;; $global_emptyActiveBets
+(cell, int) $global_emptyActiveBets() impure inline_ref;
+
+;; $FeedOfAddress$_constructor_items_length
+((cell, int)) $FeedOfAddress$_constructor_items_length(cell items, int length) inline;
+
+;; $global_emptyFeedOfAddress
+(cell, int) $global_emptyFeedOfAddress() impure inline_ref;
+
+;; $FeedOfAddress$_fun_append
+((cell, int), ()) $FeedOfAddress$_fun_append((cell, int) $self, (slice, int, int, int) $item) impure inline_ref;
+
+;; $ActiveBetsArray$_fun_append
+((cell, int), ()) $ActiveBetsArray$_fun_append((cell, int) $self, (int, slice) $item) impure inline_ref;
+
+;; $Notification$_constructor_notificationType_date_amount_competitionId
+((slice, int, int, int)) $Notification$_constructor_notificationType_date_amount_competitionId(slice notificationType, int date, int amount, int competitionId) inline;
+
+;; $BettleContract$_fun_recount
+((int, slice, int, int, int, int, cell, cell, cell, int), ()) $BettleContract$_fun_recount((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref;
+
+;; $BettleContract$_fun_id
+((int, slice, int, int, int, int, cell, cell, cell, int), int) $BettleContract$_fun_id((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref;
+
+;; $Competition$_constructor_isCompetitionActive_nextDate_competitionId
+((int, tuple, tuple, int, int)) $Competition$_constructor_isCompetitionActive_nextDate_competitionId(int isCompetitionActive, int nextDate, int competitionId) inline;
+
+;; $Competition$_constructor_isCompetitionActive_winnersTeam_losersTeam_nextDate_competitionId
+((int, tuple, tuple, int, int)) $Competition$_constructor_isCompetitionActive_winnersTeam_losersTeam_nextDate_competitionId(int isCompetitionActive, tuple winnersTeam, tuple losersTeam, int nextDate, int competitionId) inline;
+
+;; $Team$_constructor_totalCollected_color
+((slice, int)) $Team$_constructor_totalCollected_color(int totalCollected, slice color) inline;
+
+;; $BettleContract$_fun_summary
+((int, slice, int, int, int, int, cell, cell, cell, int), (int, tuple, tuple, int, int)) $BettleContract$_fun_summary((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref;
+
+;; $BettleContract$_fun_notificationsByAddress
+((int, slice, int, int, int, int, cell, cell, cell, int), (cell, int)) $BettleContract$_fun_notificationsByAddress((int, slice, int, int, int, int, cell, cell, cell, int) $self, slice $address) impure inline_ref;
+
+;; $BettleContract$_fun_balanceByAddress
+((int, slice, int, int, int, int, cell, cell, cell, int), int) $BettleContract$_fun_balanceByAddress((int, slice, int, int, int, int, cell, cell, cell, int) $self, slice $address) impure inline_ref;
+
+;; $BettleContract$_fun_balances
+((int, slice, int, int, int, int, cell, cell, cell, int), cell) $BettleContract$_fun_balances((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref;
+
+;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
+
+;; $BettleContract$_fun_forward
+((int, slice, int, int, int, int, cell, cell, cell, int), ()) $BettleContract$_fun_forward((int, slice, int, int, int, int, cell, cell, cell, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+
+;; $BettleContract$_fun_notify
+((int, slice, int, int, int, int, cell, cell, cell, int), ()) $BettleContract$_fun_notify((int, slice, int, int, int, int, cell, cell, cell, int) $self, cell $body) impure inline;
+
+;; $SendParameters$_constructor_to_value_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline;
+
+;; $ActiveBet$_constructor_amount_team
+((int, slice)) $ActiveBet$_constructor_amount_team(int amount, slice team) inline;
+
+;; $DeployOk$_constructor_queryId
+((int)) $DeployOk$_constructor_queryId(int queryId) inline;

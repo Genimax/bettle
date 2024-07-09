@@ -1,0 +1,20 @@
+;; String "red"
+slice __gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf() asm "B{b5ee9c724101010100050000067265644a855b27} B>boc <s PUSHSLICE";
+
+;; String "blue"
+slice __gen_slice_string_f0d1d1f47200ba0187aa0f500152832193c5de2fec72ae60c8678ee198576f42() asm "B{b5ee9c72410101010006000008626c75654e23a3fa} B>boc <s PUSHSLICE";
+
+;; String "win"
+slice __gen_slice_string_ac33e5447d5e48b934ee556c04a48cb0576a0f0a82dd84c033be68532153edcc() asm "B{b5ee9c7241010101000500000677696e7239b8a4} B>boc <s PUSHSLICE";
+
+;; String "refund"
+slice __gen_slice_string_2282abf8277dc4ff9183255e3d0fb487fa3963bcea406ca8943205a96e5346cd() asm "B{b5ee9c7241010101000800000c726566756e644adcd28e} B>boc <s PUSHSLICE";
+
+;; Comment "Thanks"
+cell __gen_cell_comment_39ff20e7438eb3f97ddbe4155a0187c40b14d6beb95b21455d59c729dd48ddd0() asm "B{b5ee9c7241010101000c000014000000005468616e6b73162590c6} B>boc PUSHREF";
+
+;; String "bet"
+slice __gen_slice_string_6dd9554ea89c9fb43d67479e941715c4d38d9238407e17d5678238f31c8783dc() asm "B{b5ee9c72410101010005000006626574af3fa747} B>boc <s PUSHSLICE";
+
+;; Comment "Withdraw from bettle.space"
+cell __gen_cell_comment_c2f9026a4020769955f6364ed1ede0484cd8fe3e230ae44b9cf812349e803892() asm "B{b5ee9c7241010101002000003c0000000057697468647261772066726f6d20626574746c652e7370616365788c6052} B>boc PUSHREF";

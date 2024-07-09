@@ -1,0 +1,356 @@
+;;
+;; Type: StateInit
+;; TLB: _ code:^cell data:^cell = StateInit
+;;
+
+((cell, cell)) $StateInit$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'code, cell vvv'data) = __tact_tuple_destroy_2(v);
+    return (vvv'code, vvv'data);
+}
+
+;;
+;; Type: Context
+;; TLB: _ bounced:bool sender:address value:int257 raw:^slice = Context
+;;
+
+_ $Context$_get_value((int, slice, int, slice) v) inline {
+    var (v'bounced, v'sender, v'value, v'raw) = v;
+    return v'value;
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline {
+    return (bounce, to, value, mode, body, code, data);
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline {
+    return (true, to, value, mode, body, null(), null());
+}
+
+;;
+;; Type: Deploy
+;; Header: 0x946a98b6
+;; TLB: deploy#946a98b6 queryId:uint64 = Deploy
+;;
+
+(slice, ((int))) $Deploy$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v) inline {
+    return $DeployOk$_store(begin_cell(), v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int queryId) inline {
+    return (queryId);
+}
+
+;;
+;; Type: Notification
+;; TLB: _ notificationType:^string date:uint128 amount:coins competitionId:uint64 = Notification
+;;
+
+builder $Notification$_store(builder build_0, (slice, int, int, int) v) inline {
+    var (v'notificationType, v'date, v'amount, v'competitionId) = v;
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'notificationType).end_cell());
+    build_0 = build_0.store_uint(v'date, 128);
+    build_0 = build_0.store_coins(v'amount);
+    build_0 = build_0.store_uint(v'competitionId, 64);
+    return build_0;
+}
+
+cell $Notification$_store_cell((slice, int, int, int) v) inline {
+    return $Notification$_store(begin_cell(), v).end_cell();
+}
+
+((slice, int, int, int)) $Notification$_tensor_cast((slice, int, int, int) v) asm "NOP";
+
+((slice, int, int, int)) $Notification$_constructor_notificationType_date_amount_competitionId(slice notificationType, int date, int amount, int competitionId) inline {
+    return (notificationType, date, amount, competitionId);
+}
+
+;;
+;; Type: Team
+;; TLB: _ color:^string totalCollected:coins = Team
+;;
+
+((slice, int)) $Team$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (slice vvv'color, int vvv'totalCollected) = __tact_tuple_destroy_2(v);
+    return (vvv'color, vvv'totalCollected);
+}
+
+tuple $Team$_as_optional((slice, int) v) inline {
+    var (v'color, v'totalCollected) = v;
+    return __tact_tuple_create_2(v'color, v'totalCollected);
+}
+
+tuple $Team$_to_tuple(((slice, int)) v) inline {
+    var (v'color, v'totalCollected) = v;
+    return __tact_tuple_create_2(v'color, v'totalCollected);
+}
+
+tuple $Team$_to_opt_tuple(tuple v) inline {
+    if (null?(v)) { return null(); } 
+    return $Team$_to_tuple($Team$_not_null(v)); 
+}
+
+((slice, int)) $Team$_constructor_totalCollected_color(int totalCollected, slice color) inline {
+    return (color, totalCollected);
+}
+
+;;
+;; Type: Competition
+;; TLB: _ isCompetitionActive:bool winnersTeam:Maybe Team{color:^string,totalCollected:coins} losersTeam:Maybe Team{color:^string,totalCollected:coins} nextDate:uint128 competitionId:uint64 = Competition
+;;
+
+(int, tuple, tuple, int, int) $Competition$_to_external(((int, tuple, tuple, int, int)) v) inline {
+    var (v'isCompetitionActive, v'winnersTeam, v'losersTeam, v'nextDate, v'competitionId) = v; 
+    return (v'isCompetitionActive, $Team$_to_opt_tuple(v'winnersTeam), $Team$_to_opt_tuple(v'losersTeam), v'nextDate, v'competitionId);
+}
+
+((int, tuple, tuple, int, int)) $Competition$_constructor_isCompetitionActive_nextDate_competitionId(int isCompetitionActive, int nextDate, int competitionId) inline {
+    return (isCompetitionActive, null(), null(), nextDate, competitionId);
+}
+
+((int, tuple, tuple, int, int)) $Competition$_constructor_isCompetitionActive_winnersTeam_losersTeam_nextDate_competitionId(int isCompetitionActive, tuple winnersTeam, tuple losersTeam, int nextDate, int competitionId) inline {
+    return (isCompetitionActive, winnersTeam, losersTeam, nextDate, competitionId);
+}
+
+;;
+;; Type: FeedOfAddress
+;; TLB: _ items:dict<uint32, ^Notification{notificationType:^string,date:uint128,amount:coins,competitionId:uint64}> length:int257 = FeedOfAddress
+;;
+
+builder $FeedOfAddress$_store(builder build_0, (cell, int) v) inline {
+    var (v'items, v'length) = v;
+    build_0 = build_0.store_dict(v'items);
+    build_0 = build_0.store_int(v'length, 257);
+    return build_0;
+}
+
+cell $FeedOfAddress$_store_cell((cell, int) v) inline {
+    return $FeedOfAddress$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((cell, int))) $FeedOfAddress$_load(slice sc_0) inline {
+    var v'items = sc_0~load_dict();
+    var v'length = sc_0~load_int(257);
+    return (sc_0, (v'items, v'length));
+}
+
+tuple $FeedOfAddress$_as_optional((cell, int) v) inline {
+    var (v'items, v'length) = v;
+    return __tact_tuple_create_2(v'items, v'length);
+}
+
+tuple $FeedOfAddress$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $FeedOfAddress$_as_optional(sc~$FeedOfAddress$_load());
+}
+
+((cell, int)) $FeedOfAddress$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'items, int vvv'length) = __tact_tuple_destroy_2(v);
+    return (vvv'items, vvv'length);
+}
+
+(cell, int) $FeedOfAddress$_to_external(((cell, int)) v) inline {
+    var (v'items, v'length) = v; 
+    return (v'items, v'length);
+}
+
+((cell, int)) $FeedOfAddress$_constructor_items_length(cell items, int length) inline {
+    return (items, length);
+}
+
+;;
+;; Type: ActiveBet
+;; TLB: _ amount:coins team:^string = ActiveBet
+;;
+
+builder $ActiveBet$_store(builder build_0, (int, slice) v) inline {
+    var (v'amount, v'team) = v;
+    build_0 = build_0.store_coins(v'amount);
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'team).end_cell());
+    return build_0;
+}
+
+cell $ActiveBet$_store_cell((int, slice) v) inline {
+    return $ActiveBet$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((int, slice))) $ActiveBet$_load(slice sc_0) inline {
+    var v'amount = sc_0~load_coins();
+    var v'team = sc_0~load_ref().begin_parse();
+    return (sc_0, (v'amount, v'team));
+}
+
+tuple $ActiveBet$_as_optional((int, slice) v) inline {
+    var (v'amount, v'team) = v;
+    return __tact_tuple_create_2(v'amount, v'team);
+}
+
+tuple $ActiveBet$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $ActiveBet$_as_optional(sc~$ActiveBet$_load());
+}
+
+((int, slice)) $ActiveBet$_tensor_cast((int, slice) v) asm "NOP";
+
+((int, slice)) $ActiveBet$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (int vvv'amount, slice vvv'team) = __tact_tuple_destroy_2(v);
+    return (vvv'amount, vvv'team);
+}
+
+((int, slice)) $ActiveBet$_constructor_amount_team(int amount, slice team) inline {
+    return (amount, team);
+}
+
+;;
+;; Type: ActiveBetsArray
+;; TLB: _ items:dict<uint32, ^ActiveBet{amount:coins,team:^string}> length:int257 = ActiveBetsArray
+;;
+
+builder $ActiveBetsArray$_store(builder build_0, (cell, int) v) inline {
+    var (v'items, v'length) = v;
+    build_0 = build_0.store_dict(v'items);
+    build_0 = build_0.store_int(v'length, 257);
+    return build_0;
+}
+
+cell $ActiveBetsArray$_store_cell((cell, int) v) inline {
+    return $ActiveBetsArray$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((cell, int))) $ActiveBetsArray$_load(slice sc_0) inline {
+    var v'items = sc_0~load_dict();
+    var v'length = sc_0~load_int(257);
+    return (sc_0, (v'items, v'length));
+}
+
+tuple $ActiveBetsArray$_as_optional((cell, int) v) inline {
+    var (v'items, v'length) = v;
+    return __tact_tuple_create_2(v'items, v'length);
+}
+
+tuple $ActiveBetsArray$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $ActiveBetsArray$_as_optional(sc~$ActiveBetsArray$_load());
+}
+
+((cell, int)) $ActiveBetsArray$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'items, int vvv'length) = __tact_tuple_destroy_2(v);
+    return (vvv'items, vvv'length);
+}
+
+((cell, int)) $ActiveBetsArray$_constructor_items_length(cell items, int length) inline {
+    return (items, length);
+}
+
+;;
+;; Type: Bet
+;; Header: 0x32028711
+;; TLB: bet#32028711 team:^string = Bet
+;;
+
+(slice, ((slice))) $Bet$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 839026449);
+    var v'team = sc_0~load_ref().begin_parse();
+    return (sc_0, (v'team));
+}
+
+;;
+;; Type: BettleContract
+;;
+
+builder $BettleContract$_store(builder build_0, (int, slice, int, int, int, int, cell, cell, cell, int) v) inline {
+    var (v'id, v'owner, v'competitionId, v'totalRed, v'totalBlue, v'nextDate, v'notifications, v'activeBets, v'balances, v'isCompetitionActive) = v;
+    build_0 = build_0.store_uint(v'id, 32);
+    build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = build_0.store_uint(v'competitionId, 64);
+    build_0 = build_0.store_coins(v'totalRed);
+    build_0 = build_0.store_coins(v'totalBlue);
+    build_0 = build_0.store_uint(v'nextDate, 128);
+    build_0 = build_0.store_dict(v'notifications);
+    build_0 = build_0.store_dict(v'activeBets);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_dict(v'balances);
+    build_1 = build_1.store_int(v'isCompetitionActive, 1);
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+(slice, ((int, slice, int, int, int, int, cell, cell, cell, int))) $BettleContract$_load(slice sc_0) inline {
+    var v'id = sc_0~load_uint(32);
+    var v'owner = sc_0~__tact_load_address();
+    var v'competitionId = sc_0~load_uint(64);
+    var v'totalRed = sc_0~load_coins();
+    var v'totalBlue = sc_0~load_coins();
+    var v'nextDate = sc_0~load_uint(128);
+    var v'notifications = sc_0~load_dict();
+    var v'activeBets = sc_0~load_dict();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'balances = sc_1~load_dict();
+    var v'isCompetitionActive = sc_1~load_int(1);
+    return (sc_0, (v'id, v'owner, v'competitionId, v'totalRed, v'totalBlue, v'nextDate, v'notifications, v'activeBets, v'balances, v'isCompetitionActive));
+}
+
+(slice, ((int))) $BettleContract$init$_load(slice sc_0) inline {
+    var v'id = sc_0~load_int(257);
+    return (sc_0, (v'id));
+}
+
+(int, slice, int, int, int, int, cell, cell, cell, int) $BettleContract$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$BettleContract$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (int id) = $sc~$BettleContract$init$_load();
+        $sc.end_parse();
+        return $BettleContract$_contract_init(id);
+    }
+}
+
+() $BettleContract$_contract_store((int, slice, int, int, int, int, cell, cell, cell, int) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $BettleContract$_store(b, v);
+    set_data(b.end_cell());
+}

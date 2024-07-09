@@ -1,0 +1,380 @@
+#pragma version =0.4.4;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "tact_BettleContract.headers.fc";
+#include "tact_BettleContract.stdlib.fc";
+#include "tact_BettleContract.constants.fc";
+#include "tact_BettleContract.storage.fc";
+
+;;
+;; Contract BettleContract functions
+;;
+
+int $global_addDaysToTimestamp(int $timestamp, int $days, int $minutes) impure inline_ref {
+    int $addSeconds = (($minutes == 0) ? ((($days * 60) * 60) * 24) : ($minutes * 60));
+    int $res = ($timestamp + $addSeconds);
+    return $res;
+}
+
+(int, slice, int, int, int, int, cell, cell, cell, int) $BettleContract$_contract_init(int $id) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = (null(), null(), null(), null(), null(), null(), null(), null(), null(), null());
+    $self'id = $id;
+    $self'owner = __tact_context_get_sender();
+    $self'competitionId = 0;
+    $self'totalBlue = 0;
+    $self'totalRed = 0;
+    $self'isCompetitionActive = true;
+    $self'nextDate = $global_addDaysToTimestamp(now(), 0, 5);
+    return ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive);
+}
+
+slice $global_getWinners(int $totalRed, int $totalBlue) impure inline_ref {
+    if (($totalRed > $totalBlue)) {
+        return __gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf();
+    }
+    return __gen_slice_string_f0d1d1f47200ba0187aa0f500152832193c5de2fec72ae60c8678ee198576f42();
+}
+
+int $global_getWinValue((cell, int) $betsByAddress, slice $winTeam, int $totalBetsByTeam, int $winAmount) impure inline_ref {
+    var (($betsByAddress'items, $betsByAddress'length)) = $betsByAddress;
+    int $sum = 0;
+    cell $bets = $betsByAddress'items;
+    var ($key, $value, $fresh$flag_0) = __tact_dict_min_uint_cell($bets, 32);
+    while ($fresh$flag_0) {
+        var ($value'amount, $value'team) = $ActiveBet$_not_null($ActiveBet$_load_opt($value));
+        if (__tact_slice_eq($winTeam, $value'team)) {
+            $sum = $sum + $value'amount;
+        }
+        ($key, $value, $fresh$flag_0) = __tact_dict_next_uint_cell($bets, 32, $key);
+    }
+    return (($sum * $winAmount) / $totalBetsByTeam);
+}
+
+(cell, int) $global_emptyActiveBets() impure inline_ref {
+    return $ActiveBetsArray$_constructor_items_length(null(), 0);
+}
+
+(cell, int) $global_emptyFeedOfAddress() impure inline_ref {
+    return $FeedOfAddress$_constructor_items_length(null(), 0);
+}
+
+((cell, int), ()) $FeedOfAddress$_fun_append((cell, int) $self, (slice, int, int, int) $item) impure inline_ref {
+    var (($self'items, $self'length)) = $self;
+    var (($self'items, $self'length)) = $self;
+    var (($item'notificationType, $item'date, $item'amount, $item'competitionId)) = $item;
+    $self'items~__tact_dict_set_uint_cell(32, $self'length, $Notification$_store_cell(($item'notificationType, $item'date, $item'amount, $item'competitionId)));
+    $self'length = $self'length + 1;
+    return (($self'items, $self'length), ());
+}
+
+((cell, int), ()) $ActiveBetsArray$_fun_append((cell, int) $self, (int, slice) $item) impure inline_ref {
+    var (($self'items, $self'length)) = $self;
+    var (($self'items, $self'length)) = $self;
+    var (($item'amount, $item'team)) = $item;
+    $self'items~__tact_dict_set_uint_cell(32, $self'length, $ActiveBet$_store_cell(($item'amount, $item'team)));
+    $self'length = $self'length + 1;
+    return (($self'items, $self'length), ());
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), ()) $BettleContract$_fun_recount((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = $self;
+    while ((now() >= $self'nextDate)) {
+        if (( (( (($self'isCompetitionActive == true)) ? (($self'totalRed == 0)) : (false) )) ? (($self'totalBlue == 0)) : (false) )) {
+            $self'nextDate = $global_addDaysToTimestamp($self'nextDate, 0, 5);
+        } elseif (($self'isCompetitionActive == true)) {
+            $self'nextDate = $global_addDaysToTimestamp($self'nextDate, 0, 5);
+            $self'isCompetitionActive = false;
+            cell $bets = $self'activeBets;
+            if (( (( (($self'totalRed != 0)) ? (($self'totalBlue != 0)) : (false) )) ? (($self'totalRed != $self'totalBlue)) : (false) )) {
+                slice $winners = $global_getWinners($self'totalRed, $self'totalBlue);
+                int $winnersTotal = (__tact_slice_eq(__gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf(), $winners) ? $self'totalRed : $self'totalBlue);
+                int $loseTotal = (__tact_slice_eq(__gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf(), $winners) ? $self'totalBlue : $self'totalRed);
+                int $allTotal = ($self'totalRed + $self'totalBlue);
+                int $winAmount = (($allTotal - (($loseTotal * 4) / 100)) - (($loseTotal * 1) / 100));
+                int $devFeeAmount = (($allTotal - $winAmount) - (($loseTotal * 1) / 100));
+                int $devBalance = ((~ null?(__tact_dict_get_slice_int($self'balances, 267, $self'owner, 257))) ? __tact_not_null(__tact_dict_get_slice_int($self'balances, 267, $self'owner, 257)) : 0);
+                $self'balances~__tact_dict_set_slice_int(267, $self'owner, ($devBalance + $devFeeAmount), 257);
+                var ($key, $value, $fresh$flag_1) = __tact_dict_min_slice_cell($bets, 267);
+                while ($fresh$flag_1) {
+                    var ($value'items, $value'length) = $ActiveBetsArray$_not_null($ActiveBetsArray$_load_opt($value));
+                    slice $address = $key;
+                    var ($betsArray'items, $betsArray'length) = ($value'items, $value'length);
+                    int $transferAmount = $global_getWinValue(($betsArray'items, $betsArray'length), $winners, $winnersTotal, $winAmount);
+                    if (($transferAmount > 0)) {
+                        int $userBalance = __tact_dict_get_slice_int($self'balances, 267, $address, 257);
+                        $self'balances~__tact_dict_set_slice_int(267, $address, ((~ null?($userBalance)) ? (__tact_not_null($userBalance) + $transferAmount) : $transferAmount), 257);
+                        var ($notificationsArray'items, $notificationsArray'length) = $global_emptyFeedOfAddress();
+                        if ((~ null?($FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, $address))))) {
+                            ($notificationsArray'items, $notificationsArray'length) = $FeedOfAddress$_not_null($FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, $address)));
+                        }
+                        ($notificationsArray'items, $notificationsArray'length)~$FeedOfAddress$_fun_append($Notification$_tensor_cast($Notification$_constructor_notificationType_date_amount_competitionId(__gen_slice_string_ac33e5447d5e48b934ee556c04a48cb0576a0f0a82dd84c033be68532153edcc(), now(), $transferAmount, $self'competitionId)));
+                        $self'notifications~__tact_dict_set_slice_cell(267, $address, $FeedOfAddress$_store_cell(($notificationsArray'items, $notificationsArray'length)));
+                    }
+                    ($key, $value, $fresh$flag_1) = __tact_dict_next_slice_cell($bets, 267, $key);
+                }
+            } else {
+                var ($address, $betArray, $fresh$flag_2) = __tact_dict_min_slice_cell($bets, 267);
+                while ($fresh$flag_2) {
+                    var ($betArray'items, $betArray'length) = $ActiveBetsArray$_not_null($ActiveBetsArray$_load_opt($betArray));
+                    cell $betArrayItems = $betArray'items;
+                    int $userBalance = __tact_dict_get_slice_int($self'balances, 267, $address, 257);
+                    int $totalAmount = 0;
+                    var ($index, $bet, $fresh$flag_3) = __tact_dict_min_uint_cell($betArrayItems, 32);
+                    while ($fresh$flag_3) {
+                        var ($bet'amount, $bet'team) = $ActiveBet$_not_null($ActiveBet$_load_opt($bet));
+                        $totalAmount = $totalAmount + $bet'amount;
+                        ($index, $bet, $fresh$flag_3) = __tact_dict_next_uint_cell($betArrayItems, 32, $index);
+                    }
+                    int $newBalance = ((~ null?($userBalance)) ? (__tact_not_null($userBalance) + $totalAmount) : $totalAmount);
+                    var ($notificationsArray'items, $notificationsArray'length) = $global_emptyFeedOfAddress();
+                    if ((~ null?($FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, $address))))) {
+                        ($notificationsArray'items, $notificationsArray'length) = $FeedOfAddress$_not_null($FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, $address)));
+                    }
+                    ($notificationsArray'items, $notificationsArray'length)~$FeedOfAddress$_fun_append($Notification$_tensor_cast($Notification$_constructor_notificationType_date_amount_competitionId(__gen_slice_string_2282abf8277dc4ff9183255e3d0fb487fa3963bcea406ca8943205a96e5346cd(), now(), $totalAmount, $self'competitionId)));
+                    $self'notifications~__tact_dict_set_slice_cell(267, $address, $FeedOfAddress$_store_cell(($notificationsArray'items, $notificationsArray'length)));
+                    ($address, $betArray, $fresh$flag_2) = __tact_dict_next_slice_cell($bets, 267, $address);
+                }
+            }
+            $self'activeBets = null();
+        } else {
+            $self'nextDate = $global_addDaysToTimestamp($self'nextDate, 0, 5);
+            $self'isCompetitionActive = true;
+            $self'competitionId = ($self'competitionId + 1);
+            $self'totalBlue = 0;
+            $self'totalRed = 0;
+            $self'activeBets = null();
+        }
+    }
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), ());
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), int) $BettleContract$_fun_id((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = $self;
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), $self'id);
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), (int, tuple, tuple, int, int)) $BettleContract$_fun_summary((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = $self;
+    ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)~$BettleContract$_fun_recount();
+    if (($self'isCompetitionActive == true)) {
+        return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), $Competition$_constructor_isCompetitionActive_nextDate_competitionId($self'isCompetitionActive, $self'nextDate, $self'competitionId));
+    } else {
+        slice $winners = __gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf();
+        int $winnersTotal = $self'totalRed;
+        slice $losers = __gen_slice_string_f0d1d1f47200ba0187aa0f500152832193c5de2fec72ae60c8678ee198576f42();
+        int $losersTotal = $self'totalBlue;
+        if (($self'totalBlue > $self'totalRed)) {
+            $winners = __gen_slice_string_f0d1d1f47200ba0187aa0f500152832193c5de2fec72ae60c8678ee198576f42();
+            $winnersTotal = $self'totalBlue;
+            $losers = __gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf();
+            $losersTotal = $self'totalRed;
+        }
+        return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), $Competition$_constructor_isCompetitionActive_winnersTeam_losersTeam_nextDate_competitionId($self'isCompetitionActive, $Team$_as_optional($Team$_constructor_totalCollected_color($winnersTotal, $winners)), $Team$_as_optional($Team$_constructor_totalCollected_color($losersTotal, $losers)), $self'nextDate, $self'competitionId));
+    }
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), (cell, int)) $BettleContract$_fun_notificationsByAddress((int, slice, int, int, int, int, cell, cell, cell, int) $self, slice $address) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = $self;
+    tuple $feed = $FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, $address));
+    throw_unless(58871, (~ null?($feed)));
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), $FeedOfAddress$_not_null($feed));
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), int) $BettleContract$_fun_balanceByAddress((int, slice, int, int, int, int, cell, cell, cell, int) $self, slice $address) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = $self;
+    int $balance = __tact_dict_get_slice_int($self'balances, 267, $address, 257);
+    throw_unless(51381, (~ null?($balance)));
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), __tact_not_null($balance));
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), cell) $BettleContract$_fun_balances((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline_ref {
+    var (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)) = $self;
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), $self'balances);
+}
+
+;;
+;; Receivers of a Contract BettleContract
+;;
+
+(((int, slice, int, int, int, int, cell, cell, cell, int)), ()) %$BettleContract$_internal_empty((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline {
+    var ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive) = $self;
+    ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)~$BettleContract$_fun_recount();
+    $global_send($SendParameters$_constructor_to_value_mode_body(__tact_context_get_sender(), 0, 2, __gen_cell_comment_39ff20e7438eb3f97ddbe4155a0187c40b14d6beb95b21455d59c729dd48ddd0()));
+    int $balance = ((~ null?(__tact_dict_get_slice_int($self'balances, 267, $self'owner, 257))) ? __tact_not_null(__tact_dict_get_slice_int($self'balances, 267, $self'owner, 257)) : 0);
+    $balance = ($balance + $Context$_get_value(__tact_context_get()));
+    $self'balances~__tact_dict_set_slice_int(267, $self'owner, $balance, 257);
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), ());
+}
+
+(((int, slice, int, int, int, int, cell, cell, cell, int)), ()) $BettleContract$_internal_binary_Bet((int, slice, int, int, int, int, cell, cell, cell, int) $self, (slice) $msg) impure inline {
+    var ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive) = $self;
+    var ($msg'team) = $msg;
+    throw_unless(1358, ($self'isCompetitionActive == true));
+    throw_unless(59666, ( (__tact_slice_eq(__gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf(), $msg'team)) ? (true) : (__tact_slice_eq(__gen_slice_string_f0d1d1f47200ba0187aa0f500152832193c5de2fec72ae60c8678ee198576f42(), $msg'team)) ));
+    throw_unless(13198, ($Context$_get_value(__tact_context_get()) >= 666000000));
+    if (__tact_slice_eq(__gen_slice_string_b1a24bacae4e1c1529bc760d2e4ac8abb317fdc9bda4dee9d50a745b629c22cf(), $msg'team)) {
+        $self'totalRed = ($self'totalRed + $Context$_get_value(__tact_context_get()));
+    } elseif (__tact_slice_eq(__gen_slice_string_f0d1d1f47200ba0187aa0f500152832193c5de2fec72ae60c8678ee198576f42(), $msg'team)) {
+        $self'totalBlue = ($self'totalBlue + $Context$_get_value(__tact_context_get()));
+    }
+    var ($array'items, $array'length) = $global_emptyActiveBets();
+    if ((~ null?($ActiveBetsArray$_load_opt(__tact_dict_get_slice_cell($self'activeBets, 267, __tact_context_get_sender()))))) {
+        ($array'items, $array'length) = $ActiveBetsArray$_not_null($ActiveBetsArray$_load_opt(__tact_dict_get_slice_cell($self'activeBets, 267, __tact_context_get_sender())));
+    }
+    ($array'items, $array'length)~$ActiveBetsArray$_fun_append($ActiveBet$_tensor_cast($ActiveBet$_constructor_amount_team($Context$_get_value(__tact_context_get()), $msg'team)));
+    $self'activeBets~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $ActiveBetsArray$_store_cell(($array'items, $array'length)));
+    var ($notificationsArray'items, $notificationsArray'length) = $global_emptyFeedOfAddress();
+    if ((~ null?($FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, __tact_context_get_sender()))))) {
+        ($notificationsArray'items, $notificationsArray'length) = $FeedOfAddress$_not_null($FeedOfAddress$_load_opt(__tact_dict_get_slice_cell($self'notifications, 267, __tact_context_get_sender())));
+    }
+    ($notificationsArray'items, $notificationsArray'length)~$FeedOfAddress$_fun_append($Notification$_tensor_cast($Notification$_constructor_notificationType_date_amount_competitionId(__gen_slice_string_6dd9554ea89c9fb43d67479e941715c4d38d9238407e17d5678238f31c8783dc(), now(), $Context$_get_value(__tact_context_get()), $self'competitionId)));
+    $self'notifications~__tact_dict_set_slice_cell(267, __tact_context_get_sender(), $FeedOfAddress$_store_cell(($notificationsArray'items, $notificationsArray'length)));
+    ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)~$BettleContract$_fun_recount();
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), ());
+}
+
+((int, slice, int, int, int, int, cell, cell, cell, int), ()) $BettleContract$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4((int, slice, int, int, int, int, cell, cell, cell, int) $self) impure inline {
+    var ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive) = $self;
+    ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)~$BettleContract$_fun_recount();
+    int $balance = __tact_dict_get_slice_int($self'balances, 267, __tact_context_get_sender(), 257);
+    throw_unless(11014, (~ null?($balance)));
+    throw_unless(48449, (__tact_not_null($balance) > 60000000));
+    $global_send($SendParameters$_constructor_to_value_mode_body(__tact_context_get_sender(), __tact_not_null($balance), 66, __gen_cell_comment_c2f9026a4020769955f6364ed1ede0484cd8fe3e230ae44b9cf812349e803892()));
+    $self'balances~__tact_dict_set_slice_int(267, __tact_context_get_sender(), 0, 257);
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), ());
+}
+
+(((int, slice, int, int, int, int, cell, cell, cell, int)), ()) $BettleContract$_internal_binary_Deploy((int, slice, int, int, int, int, cell, cell, cell, int) $self, (int) $deploy) impure inline {
+    var ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive)~$BettleContract$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'id, $self'owner, $self'competitionId, $self'totalRed, $self'totalBlue, $self'nextDate, $self'notifications, $self'activeBets, $self'balances, $self'isCompetitionActive), ());
+}
+
+;;
+;; Get methods of a Contract BettleContract
+;;
+
+_ %id() method_id(105872) {
+    var self = $BettleContract$_contract_load();
+    var res = self~$BettleContract$_fun_id();
+    return res;
+}
+
+_ %summary() method_id(77650) {
+    var self = $BettleContract$_contract_load();
+    var res = self~$BettleContract$_fun_summary();
+    return $Competition$_to_external(res);
+}
+
+_ %notificationsByAddress(slice $$address) method_id(83443) {
+    slice $address = __tact_verify_address($$address);
+    var self = $BettleContract$_contract_load();
+    var res = self~$BettleContract$_fun_notificationsByAddress($address);
+    return $FeedOfAddress$_to_external(res);
+}
+
+_ %balanceByAddress(slice $$address) method_id(110008) {
+    slice $address = __tact_verify_address($$address);
+    var self = $BettleContract$_contract_load();
+    var res = self~$BettleContract$_fun_balanceByAddress($address);
+    return res;
+}
+
+_ %balances() method_id(93579) {
+    var self = $BettleContract$_contract_load();
+    var res = self~$BettleContract$_fun_balances();
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://Qmb6mxmgqXAv3PwVsCE9i296UGA9p8ccbzYY2n8Pnvanxr";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract BettleContract
+;;
+
+((int, slice, int, int, int, int, cell, cell, cell, int), int) $BettleContract$_contract_router_internal((int, slice, int, int, int, int, cell, cell, cell, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive empty message
+    if ((op == 0) & (slice_bits(in_msg) <= 32)) {
+        self~%$BettleContract$_internal_empty();
+        return (self, true);
+    }
+    
+    ;; Receive Bet message
+    if (op == 839026449) {
+        var msg = in_msg~$Bet$_load();
+        self~$BettleContract$_internal_binary_Bet(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$BettleContract$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "withdraw" message
+        if (text_op == 0x095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4) {
+            self~$BettleContract$_internal_text_095190194aee611ce895c5503adf85fd864de7905746142f608d3eb2faad14e4();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $BettleContract$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$BettleContract$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $BettleContract$_contract_store(self);
+}
