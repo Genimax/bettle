@@ -1,8 +1,8 @@
 import BorderedBlock from "../shared/BorderedBlock";
 import Timer from "../unique/Timer";
 
-const Hero = ({ isCompetitionActive }) => {
-  const timestamp = "01.08.2024";
+const Hero = ({ isCompetitionActive, dateUNIX }) => {
+  const timestamp = dateUNIX ? new Date(Number(dateUNIX) * 1000) : null;
 
   return (
     <BorderedBlock>

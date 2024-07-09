@@ -1,7 +1,9 @@
 import { extractCurrentConfig } from "@/utils/configTools";
 import { CldImage } from "next-cloudinary";
+import { fromNano } from "ton-core";
 
 const ResultsPanel = ({ data }) => {
+  if (!data) return null;
   const { isCompetitionActive, winnersTeam, losersTeam } = data;
   if (isCompetitionActive) return null;
 
@@ -9,7 +11,7 @@ const ResultsPanel = ({ data }) => {
 
   const winText = config[winnersTeam.color].winText;
 
-  let winColor, looseColor, winNeon, winBorder, loseBorder;
+  let winColor, winNeon, winBorder, loseBorder;
 
   if (winnersTeam.color === "red") {
     winColor = "text-main-orange";
@@ -50,7 +52,7 @@ const ResultsPanel = ({ data }) => {
             className={`px-8 bg-transparent h-fit py-6 w-full border-4 rounded-xl text-center content-center font-bold text-xl ${winBorder}`}
           >
             {config[winnersTeam.color].name.toUpperCase()}:{" "}
-            {winnersTeam.totalCollected} TON
+            {fromNano(winnersTeam.totalCollected)} TON
           </div>
         </div>
         <div className="flex flex-col lg:flex-row justify-start items-center w-5/6">
@@ -69,7 +71,7 @@ const ResultsPanel = ({ data }) => {
             className={`px-8 bg-transparent h-fit py-6 w-full border-4 rounded-xl text-center content-center font-bold  text-xl ${loseBorder}`}
           >
             {config[losersTeam.color].name.toUpperCase()}:{" "}
-            {losersTeam.totalCollected} TON
+            {fromNano(losersTeam.totalCollected)} TON
           </div>
         </div>
       </div>

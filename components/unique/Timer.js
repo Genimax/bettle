@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "@/components/shared/LoadingSpinnder";
 
 const Timer = ({ timestamp }) => {
   /**
@@ -8,9 +9,9 @@ const Timer = ({ timestamp }) => {
    * @returns {Object} An object containing the time left in days, hours, minutes, and seconds.
    *                   If the target date has passed, returns an object with all fields set to "00".
    */
+
   const calculateTimeLeft = () => {
-    // Convert the timestamp from "dd.mm.yyyy" format to "yyyy-mm-dd" format and create a Date object
-    const targetDate = new Date(timestamp.split(".").reverse().join("-"));
+    const targetDate = timestamp;
     const now = new Date();
     const difference = targetDate - now;
 
@@ -43,15 +44,10 @@ const Timer = ({ timestamp }) => {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (Object.keys(timeLeft).length !== 0) {
-      setLoading(false);
-    }
-  }, [timeLeft]);
-
-  useEffect(() => {
+    if (!timestamp) return;
+    setTimeLeft(calculateTimeLeft());
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -63,7 +59,14 @@ const Timer = ({ timestamp }) => {
     <div className="container flex flex-wrap justify-center lg:justify-between text-2xl sm:text-3xl md:text-4xl font-bold gap-4 sm:gap-6 md:gap-6">
       {["days", "hours", "minutes", "seconds"].map((unit) => (
         <div key={unit} className="flex flex-col items-center">
-          <div>{!loading ? timeLeft[unit] : "00"}</div>
+          {timestamp && <div>{timeLeft[unit]}</div>}
+          {!timestamp && (
+            <LoadingSpinner
+              loading={!timestamp}
+              className="pb-2"
+              widthHeight={"w-8 h-8"}
+            />
+          )}
           <div className="text-base sm:text-lg">{unit.toUpperCase()}</div>
         </div>
       ))}

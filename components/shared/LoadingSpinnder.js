@@ -3,7 +3,7 @@ import React from "react";
 const LoadingSpinner = ({
   className,
   widthHeight = "w-24 h-24",
-  loading = false,
+  loading = true,
   color = "blue-500",
 }) => {
   if (!loading) return null;

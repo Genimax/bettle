@@ -4,6 +4,11 @@ import axios from "axios";
 import useStore from "@/store";
 import ModalWindowShare from "@/components/shared/ModalWindowShare";
 import config from "@/config/teamConfig.json";
+import { useBettleContract } from "@/hooks/useBettleContract";
+import { Address, beginCell } from "ton-core";
+import { useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
+import { storeBet } from "@/contract/build/BettleContract/tact_BettleContract";
+import { useTonConnect } from "@/hooks/useTonConnect";
 
 const ContributionPanel = ({ team }) => {
   let color;
@@ -12,6 +17,7 @@ const ContributionPanel = ({ team }) => {
   } else {
     color = "bg-main-blue";
   }
+  const { bet } = useBettleContract();
 
   const getUSDToTON = async () => {
     const response = await axios.get(
@@ -72,11 +78,20 @@ const ContributionPanel = ({ team }) => {
   const usdMin = config.minimumUSD;
   const TONMin = (usdMin / usdToTON).toFixed(4);
 
+  const contributeHandler = async () => {
+    try {
+      await bet(TONValue, team);
+      showModal();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full text-xl min-w-60 pt-8">
       <ValueInput
         currency="TON"
-        minimum={TONMin}
+        minimum={Number(TONMin)}
         value={TONValue}
         setValue={updateTONValue}
       />
@@ -87,7 +102,7 @@ const ContributionPanel = ({ team }) => {
         setValue={updateUsdValue}
       />
       <button
-        onClick={showModal}
+        onClick={contributeHandler}
         disabled={!TONValue || !usdValue || usdValue < usdMin}
         className={`transition-transform duration-100 ease-in-out active:scale-95 disabled:bg-gray-500 font-bold ${color} px-4 py-3 rounded-xl hover:bg-opacity-80 transition-all duration-300 ease-in-out`}
       >

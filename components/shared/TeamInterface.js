@@ -13,6 +13,7 @@ const TeamInterface = ({ isCompetitionActive }) => {
           <TeamCard team="red" />
           {address && <ContributionPanel team={"red"} />}
         </div>
+
         <div>
           <TeamCard team="blue" />
           {address && <ContributionPanel team={"blue"} />}
